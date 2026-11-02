@@ -1,17 +1,16 @@
-
 from pathlib import Path
 import torch
 
-# Project paths
+
 BASE_DIR = Path(__file__).parent
 
 TOKENIZER_PATH = BASE_DIR / "tokenizer" / "trained" / "tokenizer.json"
 CHECKPOINT_DIR = BASE_DIR / "checkpoints"
 
-# Device
+
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# GPT configuration
+
 VOCAB_SIZE = 8000
 
 BLOCK_SIZE = 256
@@ -35,7 +34,7 @@ WEIGHT_DECAY = 0.01
 
 GRAD_CLIP = 1.0
 
-# SFT (Supervised Fine-Tuning) configuration
+# SFT configuration
 SFT_MAX_ITERS = 10000
 
 SFT_BATCH_SIZE = 4
