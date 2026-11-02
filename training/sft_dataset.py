@@ -1,4 +1,3 @@
-
 import json
 import random
 import torch
@@ -38,7 +37,7 @@ class SFTDataset(Dataset):
                 if line.strip():
                     conversations.append(json.loads(line))
 
-        # Shuffle และแบ่งบทสนทนาก่อนสร้าง Chunk
+        # Shuffle and Chunk
         rng = random.Random(seed)
         rng.shuffle(conversations)
 
@@ -94,7 +93,7 @@ class SFTDataset(Dataset):
                     token_ids.append(EOS_TOKEN_ID)
                     labels.append(EOS_TOKEN_ID)
 
-            # สร้าง Chunk
+            # Chunk
             for start in range(0, len(token_ids) - 1, BLOCK_SIZE):
 
                 x = token_ids[start:start + BLOCK_SIZE]
