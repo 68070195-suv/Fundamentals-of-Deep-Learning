@@ -1,4 +1,3 @@
-
 import json
 import unicodedata
 from pathlib import Path
@@ -6,10 +5,6 @@ from pathlib import Path
 from tokenizers import Tokenizer, models, trainers, pre_tokenizers, decoders, normalizers
 from tokenizers import decoders, normalizers
 
-
-# ==========================================
-# 1. กำหนด Path
-# ==========================================
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,9 +25,7 @@ OUTPUT_DIR = ROOT_DIR / "tokenizer" / "trained"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# ==========================================
-# 2. ตั้งค่า Tokenizer
-# ==========================================
+ #Tokenizer
 
 VOCAB_SIZE = 8000
 MIN_FREQUENCY = 2
@@ -48,10 +41,6 @@ SPECIAL_TOKENS = [
 ]
 
 
-# ==========================================
-# 3. เตรียมข้อมูลสำหรับฝึก
-# ==========================================
-
 def normalize_text(text):
     text = unicodedata.normalize("NFC", text)
     return text.strip()
@@ -62,7 +51,6 @@ def training_data():
     total_words = 0
     total_chat = 0
 
-    # General Thai Text
     if not GENERAL_TEXT_PATH.exists():
         raise FileNotFoundError(
             f"ไม่พบไฟล์ General Text: {GENERAL_TEXT_PATH}"
@@ -81,7 +69,6 @@ def training_data():
                 total_general += 1
                 yield text
 
-    # Word Dataset
     if not WORD_TEXT_PATH.exists():
         raise FileNotFoundError(
             f"ไม่พบไฟล์ Word Dataset: {WORD_TEXT_PATH}"
@@ -100,7 +87,6 @@ def training_data():
                 total_words += 1
                 yield text
 
-    # Conversation Dataset
     if not CHAT_DATA_PATH.exists():
         raise FileNotFoundError(
             f"ไม่พบไฟล์ Chat Dataset: {CHAT_DATA_PATH}"
@@ -142,9 +128,7 @@ def training_data():
     print(f"Chat Messages: {total_chat:,} ข้อความ")
 
 
-# ==========================================
-# 4. สร้าง BPE Tokenizer
-# ==========================================
+#  BPE Tokenizer
 
 def build_tokenizer():
 
@@ -177,7 +161,7 @@ def build_tokenizer():
         trainer=trainer
     )
 
-    # บันทึก Tokenizer
+    # save Tokenizer
     tokenizer_path = OUTPUT_DIR / "tokenizer.json"
 
     tokenizer.save(str(tokenizer_path))
@@ -191,9 +175,9 @@ def build_tokenizer():
     return tokenizer
 
 
-# ==========================================
-# 5. ทดสอบ Tokenizer
-# ==========================================
+
+# test Tokenizer
+
 
 def test_tokenizer(tokenizer):
 
@@ -218,10 +202,6 @@ def test_tokenizer(tokenizer):
         print("จำนวน Tokens:", len(encoded.ids))
         print("Decoded:", decoded)
 
-
-# ==========================================
-# 6. Main
-# ==========================================
 
 if __name__ == "__main__":
 
