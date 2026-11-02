@@ -149,7 +149,7 @@ def train(max_iters, eval_interval):
     print("Training Batches:", len(train_loader))
     print("Validation Batches:", len(val_loader))
 
-    # สร้าง GPT
+    # Create GPT
     model = GPTModel().to(DEVICE)
 
     # Optimizer
@@ -168,7 +168,7 @@ def train(max_iters, eval_interval):
 
     best_val_loss = float("inf")
 
-    # ประเมินก่อนเริ่มฝึก
+    # test-pre
     losses = evaluate(
         model,
         train_loader,
@@ -195,7 +195,7 @@ def train(max_iters, eval_interval):
         x = x.to(DEVICE, non_blocking=True)
         y = y.to(DEVICE, non_blocking=True)
 
-        # คำนวณ Loss
+        # Loss
         loss = calculate_loss(model, x, y)
 
         # Backpropagation
@@ -203,13 +203,13 @@ def train(max_iters, eval_interval):
 
         loss.backward()
 
-        # จำกัด Gradient
+        # Gradient
         torch.nn.utils.clip_grad_norm_(
             model.parameters(),
             GRAD_CLIP
         )
 
-        # ปรับ Parameters
+        # Parameters
         optimizer.step()
 
         if step % LOG_INTERVAL == 0:
