@@ -1,0 +1,136 @@
+from pathlib import Path
+import argparse
+import shutil
+import sys
+import gdown
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = PROJECT_ROOT / "data"
+
+DRIVE_FOLDER_URL = (
+    "https://drive.google.com/drive/folders/"
+    "1F6trzlkUcU9Sy6RBeRds20odr0fDR1ck"
+)
+
+REQUIRED_FILES = [
+    "raw/chat_5.txt",
+    "raw/sentence2.txt",
+    "raw/words.txt",
+    "processed/chat_dataset.jsonl",
+]
+
+
+def check_dataset():
+
+    missing = []
+
+    for relative_path in REQUIRED_FILES:
+        file_path = DATA_DIR / relative_path
+
+        if not file_path.is_file() or file_path.stat().st_size == 0:
+            missing.append(relative_path)
+
+    return missing
+
+
+def download_dataset(force=False):
+
+    print("=" * 55)
+    print(" ChatAI Thai Language - Dataset Downloader")
+    print("=" * 55)
+
+    print(f"Project : {PROJECT_ROOT}")
+    print(f"Data    : {DATA_DIR}")
+
+    missing = check_dataset()
+
+    if not missing and not force:
+        print("\n[SKIP] Dataset is already installed.")
+        print(f"Location: {DATA_DIR.resolve()}")
+        return True
+
+    print("\n[DOWNLOAD] Downloading Dataset folders...")
+    print("[INFO] Connecting to Google Drive...")
+
+    temp_dir = PROJECT_ROOT / "dataset_temp"
+
+    try:
+        if temp_dir.exists():
+            shutil.rmtree(temp_dir)
+
+        downloaded = gdown.download_folder(
+            url=DRIVE_FOLDER_URL,
+            output=str(temp_dir),
+            quiet=False,
+        )
+
+        if not downloaded:
+            print("\n[ERROR] Download failed.")
+            return False
+
+
+        source_data = temp_dir / "data"
+
+        if not source_data.is_dir():
+            source_data = temp_dir
+
+
+        for relative_path in REQUIRED_FILES:
+            file_path = source_data / relative_path
+
+            if not file_path.is_file() or file_path.stat().st_size == 0:
+                print(f"\n[ERROR] Missing file: {relative_path}")
+                return False
+
+        print("\n[INSTALL] Copying Dataset...")
+
+        if DATA_DIR.exists():
+            shutil.rmtree(DATA_DIR)
+
+        shutil.copytree(source_data, DATA_DIR)
+
+
+        missing = check_dataset()
+
+        if missing:
+            print("\n[ERROR] Installation incomplete:")
+            for item in missing:
+                print(f" - {item}")
+            return False
+
+        print("\n[SUCCESS] Dataset installed successfully!")
+        print(f"Location: {DATA_DIR.resolve()}")
+
+        return True
+
+    except Exception as error:
+        print(f"\n[ERROR] {error}")
+        return False
+
+    finally:
+        if temp_dir.exists():
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+
+def main():
+
+    parser = argparse.ArgumentParser(
+        description="ChatAI Thai Language Dataset Downloader"
+    )
+
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Download Dataset again and replace existing data",
+    )
+
+    args = parser.parse_args()
+
+    if not download_dataset(force=args.force):
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
