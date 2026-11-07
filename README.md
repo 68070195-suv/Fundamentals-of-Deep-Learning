@@ -6,7 +6,7 @@
 ```
 python -m pip check
 ```
-ต้องขึ้น `No broken requirements found`
+
 
 ## 2. ตรวจ GPU
 ```
@@ -31,7 +31,7 @@ Get-ChildItem data\raw, data\processed | Select-Object Name, Length
 ```
 python -m training.pretrain --help
 ```
-จะได้ `best_pretrain.pt
+จะได้ `best_pretrain.pt`
 
 
 ## 9. SFT
