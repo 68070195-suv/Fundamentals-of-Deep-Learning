@@ -22,8 +22,8 @@ ChatAI คือโปรเจกต์พัฒนาแชตบอตภา�
 |------|------------|
 | `chat_5.txt` | เป็น Dataset ที่สังเคราะห์ขึ้นมา |
 | `sentence2.txt` | CC-100 Thai จาก `[wannaphong/cc100-th](https://huggingface.co/datasets/wannaphong/cc100-th/blob/main/cc100-th.txt.xz)` |
-| `words.txt` | Dataset คำศัพท์ภาษาไทย จาก `https://huggingface.co/datasets/ZombitX64/Thai-corpus-word/blob/main/combined_thai_corpus.txt` |
-| `chat_dataset.jsonl` | Dataset สำหรับ SFT |
+| `words.txt` | เป็น Dataset คำศัพท์ภาษาไทย จาก `https://huggingface.co/datasets/ZombitX64/Thai-corpus-word/blob/main/combined_thai_corpus.txt` |
+| `chat_dataset.jsonl` | เป็น Dataset เก็บบทสนทนาสำหรับฝึกได้มาจาก `chat_5.txt` |
 
 ### Project Structure
 
@@ -36,17 +36,26 @@ chatAI/
 │   │   └── words.txt
 │   └── processed/
 │       └── chat_dataset.jsonl
-├── dataset/
+├── download/
 │   └── download_data.py
 ├── tokenizer/
+│   └── tokenizer.json
+│   └── train_tokenizer.py
 ├── model/
+│   └── attention.pyy
+│   └── embedding.py
+│   └── feed_forward.py
+│   └── gpt.py
+│   └── transformer.py
 ├── training/
+│   └── dataset.py
+│   └── pretrain.py
+│   └── sft_dataset.py
+│   └── sft_train.py
 ├── checkpoints/
-├── memory/
 ├── chatbot/
-├── interface/
-├── config.py
-└── main.py
+│   └── generate.py
+└── config.py
 ```
 
 ---
