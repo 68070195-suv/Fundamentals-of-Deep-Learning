@@ -95,5 +95,5 @@ python -m training.sft_train --help
 
 ## 10. เปิด Chatbot
 ```
-python -m training.generate
+python -m chatbot.generate
 ```
