@@ -21,7 +21,7 @@ ChatAI คือโปรเจกต์พัฒนาแชตบอตภา�
 | ไฟล์ | รายละเอียด |
 |------|------------|
 | `chat_5.txt` | เป็น Dataset ที่สังเคราะห์ขึ้นมา |
-| `sentence2.txt` | CC-100 Thai จาก `[wannaphong/cc100-th](https://huggingface.co/datasets/wannaphong/cc100-th/blob/main/cc100-th.txt.xz)` |
+| `sentence2.txt` | เป็น Dataset ประโยคภาษาไทย จาก `[wannaphong/cc100-th](https://huggingface.co/datasets/wannaphong/cc100-th/blob/main/cc100-th.txt.xz)` |
 | `words.txt` | เป็น Dataset คำศัพท์ภาษาไทย จาก `https://huggingface.co/datasets/ZombitX64/Thai-corpus-word/blob/main/combined_thai_corpus.txt` |
 | `chat_dataset.jsonl` | เป็น Dataset เก็บบทสนทนาสำหรับฝึกได้มาจาก `chat_5.txt` |
 
