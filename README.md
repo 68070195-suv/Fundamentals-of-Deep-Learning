@@ -1,25 +1,69 @@
-# ChatThai — คำสั่งตรวจสอบ
+# ChatAI
+ChatAI คือโปรเจกต์พัฒนาแชตบอตภาษาไทยด้วย PyTorch โดยใช้สถาปัตยกรรม Mini-GPT (Transformer-based Language Model) มีเป้าหมายเพื่อให้โมเดลเรียนรู้รูปแบบภาษาไทยและสามารถสร้างคำตอบในรูปแบบบทสนทนาได้
 
+กระบวนการพัฒนาประกอบด้วยการเตรียม Dataset, Tokenizer, Pretraining, Supervised Fine-Tuning (SFT) และการนำโมเดลไปใช้งานผ่าน Chatbot
 
+## Task & Project Overview
 
-## 1. ตรวจ Library
+### Model Architecture
+
+| รายการ | ค่า |
+|--------|-----|
+| Embedding Size | 384 |
+| Attention Heads | 4 |
+| Transformer Layers | 4 |
+| Parameters | ~3,000,000 (โดยประมาณ) |
+| Framework | PyTorch |
+| GPU | NVIDIA RTX 5060 |
+
+### Dataset Sources
+
+| ไฟล์ | รายละเอียด |
+|------|------------|
+| `chat_5.txt` | เป็น Dataset ที่สังเคราะห์ขึ้นมา |
+| `sentence2.txt` | CC-100 Thai จาก `[wannaphong/cc100-th](https://huggingface.co/datasets/wannaphong/cc100-th/blob/main/cc100-th.txt.xz)` |
+| `words.txt` | Dataset คำศัพท์ภาษาไทย จาก `https://huggingface.co/datasets/ZombitX64/Thai-corpus-word/blob/main/combined_thai_corpus.txt` |
+| `chat_dataset.jsonl` | Dataset สำหรับ SFT |
+
+### Project Structure
+
 ```
-python -m pip check
+chatAI/
+├── data/
+│   ├── raw/
+│   │   ├── chat_5.txt
+│   │   ├── sentence2.txt
+│   │   └── words.txt
+│   └── processed/
+│       └── chat_dataset.jsonl
+├── dataset/
+│   └── download_data.py
+├── tokenizer/
+├── model/
+├── training/
+├── checkpoints/
+├── memory/
+├── chatbot/
+├── interface/
+├── config.py
+└── main.py
+```
+
+---
+
+## ติดตั้ง Library
+```
+python -m pip install -r requirements.txt
 ```
 
 
-## 2. ตรวจ GPU
+## download Dataset
 ```
-python -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.version.cuda); print(torch.cuda.get_device_name(0))"
-```
-
-## 3. ตรวจ Hugging Face
-```
-hf auth whoami
+python -m download.download_data
 ```
 
 
-## 4. ตรวจไฟล์ Dataset
+## ตรวจไฟล์ Dataset
 ```
 Get-ChildItem data\raw, data\processed | Select-Object Name, Length
 ```
@@ -27,14 +71,14 @@ Get-ChildItem data\raw, data\processed | Select-Object Name, Length
 
 
 
-## 7. Pretraining
+## Pretraining
 ```
 python -m training.pretrain --help
 ```
 จะได้ `best_pretrain.pt`
 
 
-## 9. SFT
+## SFT
 ```
 python -m training.sft_train --help
 ```
