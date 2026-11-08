@@ -1,0 +1,9 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+torch==2.11.0
+numpy
+tokenizers==0.21.2
+tqdm
+matplotlib
+pandas
+huggingface_hub
