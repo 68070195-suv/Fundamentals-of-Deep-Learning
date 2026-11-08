@@ -82,14 +82,14 @@ Get-ChildItem data\raw, data\processed | Select-Object Name, Length
 
 ## Pretraining
 ```
-python -m training.pretrain --help
+python -m training.pretrain
 ```
 จะได้ `best_pretrain.pt`
 
 
 ## SFT
 ```
-python -m training.sft_train --help
+python -m training.sft_train
 ```
 ดู arguments ก่อน แล้วเทรน จะได้ `best_sft.pt`
 
